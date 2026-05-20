@@ -1,0 +1,23 @@
+{
+  "name": "onclickmailsurvey",
+  "version": "1.0.0",
+  "description": "Sistema de pesquisa one-click por e-mail",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "nodemailer": "^8.0.7"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

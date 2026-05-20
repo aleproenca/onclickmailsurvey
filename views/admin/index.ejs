@@ -1,0 +1,41 @@
+<%- include('../partials/header', { title: 'Painel administrativo' }) %>
+<section class="toolbar">
+  <h1>Campanhas</h1>
+  <a href="/admin/campaigns/new" class="btn">Nova campanha</a>
+</section>
+
+<section class="card">
+  <% if (campaigns.length === 0) { %>
+    <p>Nenhuma campanha criada ainda.</p>
+  <% } else { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Status</th>
+          <th>Destinatários</th>
+          <th>Respostas</th>
+          <th>Sim</th>
+          <th>Não</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% campaigns.forEach((campaign) => { %>
+          <tr>
+            <td><%= campaign.id %></td>
+            <td><%= campaign.title %></td>
+            <td><span class="status status-<%= campaign.status %>"><%= campaign.status %></span></td>
+            <td><%= campaign.recipients_count %></td>
+            <td><%= campaign.responses_count %></td>
+            <td><%= campaign.sim_count || 0 %></td>
+            <td><%= campaign.nao_count || 0 %></td>
+            <td><a href="/admin/campaigns/<%= campaign.id %>">Abrir</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>
