@@ -31,7 +31,29 @@ function splitAndNormalizeEmails(rawEmails) {
 }
 
 function isEmailValid(email) {
-  return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (typeof email !== 'string') return false;
+
+  const value = email.trim();
+  const atIndex = value.indexOf('@');
+  const lastAtIndex = value.lastIndexOf('@');
+
+  if (atIndex <= 0 || atIndex !== lastAtIndex || atIndex === value.length - 1) {
+    return false;
+  }
+
+  const localPart = value.slice(0, atIndex);
+  const domain = value.slice(atIndex + 1);
+  const dotIndex = domain.indexOf('.');
+
+  if (!localPart || dotIndex <= 0 || dotIndex === domain.length - 1) {
+    return false;
+  }
+
+  if (value.includes(' ') || value.includes('\t') || value.includes('\n')) {
+    return false;
+  }
+
+  return true;
 }
 
 function formatDateTime(dateTime) {
