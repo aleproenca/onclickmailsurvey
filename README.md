@@ -1,2 +1,1 @@
 # onclickmailsurvey
-click email survey
