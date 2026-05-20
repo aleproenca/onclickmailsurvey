@@ -1,0 +1,77 @@
+<%- include('../partials/header', { title: `Campanha #${campaign.id}` }) %>
+<section class="toolbar">
+  <div>
+    <h1><%= campaign.title %></h1>
+    <p><%= campaign.question %></p>
+  </div>
+  <a href="/admin" class="btn btn-secondary">Voltar</a>
+</section>
+
+<section class="card">
+  <h2>Status da campanha</h2>
+  <form method="post" action="/admin/campaigns/<%= campaign.id %>/status" class="inline-form">
+    <select name="status">
+      <option value="draft" <%= campaign.status === 'draft' ? 'selected' : '' %>>draft</option>
+      <option value="active" <%= campaign.status === 'active' ? 'selected' : '' %>>active</option>
+      <option value="closed" <%= campaign.status === 'closed' ? 'selected' : '' %>>closed</option>
+    </select>
+    <button type="submit" class="btn">Salvar status</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Destinatários</h2>
+  <form method="post" action="/admin/campaigns/<%= campaign.id %>/recipients" class="form-grid">
+    <label>
+      Cole e-mails (separados por vírgula, espaço ou quebra de linha)
+      <textarea name="emails" rows="4" required></textarea>
+    </label>
+    <button type="submit" class="btn">Adicionar destinatários</button>
+  </form>
+
+  <div class="actions-row">
+    <form method="post" action="/admin/campaigns/<%= campaign.id %>/send">
+      <button class="btn" type="submit">Enviar e-mails da campanha</button>
+    </form>
+    <% if (!smtpConfigured) { %>
+      <span class="hint">SMTP não configurado: configure variáveis de ambiente para habilitar envio.</span>
+    <% } %>
+    <a class="btn btn-secondary" href="/admin/campaigns/<%= campaign.id %>/export.csv">Exportar respostas (CSV)</a>
+  </div>
+
+  <% if (recipients.length === 0) { %>
+    <p class="hint">Nenhum destinatário cadastrado.</p>
+  <% } else { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>E-mail</th>
+          <th>Enviado em</th>
+          <th>Resposta</th>
+          <th>Data resposta</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% recipients.forEach((recipient) => { %>
+          <tr>
+            <td><%= recipient.email %></td>
+            <td><%= formatDateTime(recipient.sent_at) %></td>
+            <td><%= recipient.answer ? recipient.answer.toUpperCase() : '-' %></td>
+            <td><%= formatDateTime(recipient.answered_at) %></td>
+            <td>
+              <a href="/admin/campaigns/<%= campaign.id %>/email-preview/<%= recipient.id %>" target="_blank">Pré-visualizar e-mail</a>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5" class="token-cell">
+              Link único (não expõe e-mail):
+              <code><%= baseUrl %>/respond?token=<%= recipient.token %>&answer=sim</code>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>

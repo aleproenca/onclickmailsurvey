@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title || 'OnClick Mail Survey' %></title>
+  <link rel="stylesheet" href="/public/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <a href="/admin" class="brand">OnClick Mail Survey</a>
+    </div>
+  </header>
+  <main class="container">
+    <% if (message) { %>
+      <div class="alert alert-<%= messageType === 'error' ? 'error' : messageType %>"><%= message %></div>
+    <% } %>
